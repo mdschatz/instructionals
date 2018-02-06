@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+file="/root/fan_status"
+status=$(sudo cat "$file")
+
+turn_on() {
+  echo 1 | sudo tee "$file"
+  sudo i2cset -y 1 0x60 0x05 0xf0
+}
+
+turn_off() {
+  echo 0 | sudo tee "$file"
+  sudo i2cset -y 1 0x60 0x05 0xf5
+}
+
+case "$status" in
+  0 )
+    turn_on
+    ;;
+  1 )
+    turn_off
+    ;;
+  * )
+    echo "What the?"
+    ;;
+esac
