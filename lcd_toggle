@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+file="/sys/class/backlight/fb_ili9340/bl_power"
+status=$(sudo cat "$file")
+
+turn_on() {
+  echo 0 | sudo tee "$file"
+}
+
+turn_off() {
+  echo 1 | sudo tee "$file"
+}
+
+case "$status" in
+  0 )
+    turn_off
+    ;;
+  1 )
+    turn_on
+    ;;
+  * )
+    echo "What the?"
+    ;;
+esac
